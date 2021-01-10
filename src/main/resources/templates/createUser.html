@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" >
+<head>
+    <meta charset="UTF-8">
+    <title>Создание пользователя</title>
+</head>
+<body>
+<h2>Создание нового пользователя</h2>
+    <form th:action="@{/user/userPage}" method="post">
+        <table border='1px'>
+            <tr>
+                <th>Логин</th>
+                <th>Возраст</th>
+            </tr>
+            <tr>
+                <td><input name="login" placeholder="Введите логин"/></td>
+                <td><input name="age" placeholder="Введите возраст"></td>
+            </tr>
+        </table>
+        <button type="submit">Создать</button>
+    </form>
+</body>
+</html>
