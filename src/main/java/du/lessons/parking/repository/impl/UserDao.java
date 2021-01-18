@@ -32,7 +32,16 @@ public class UserDao implements IUserDao {
         getSession().saveOrUpdate(user);
     }
 
-
+    @Override
+    public boolean ifUserExists(String login) {
+        TypedQuery<Long> query = manager.createQuery("SELECT count(u) from User u where u.login = :login", Long.class);
+        query.setParameter("login", login);
+        Long count = query.getSingleResult();
+        if (count > 0) {
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public User findById(Long id) {

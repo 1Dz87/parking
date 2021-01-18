@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход</title>
+</head>
+<body>
+    <h3>Вход в парковку</h3>
+    <form action="/login" method="post">
+        <p>
+            <label>Логин:</label>
+            <input type="text" name="username" placeholder="Логин" />
+        </p>
+        <p>
+            <label>Пароль:</label>
+            <input type="password" name="password" placeholder="Пароль" />
+        </p>
+        <button type="submit">Вход</button>
+    </form>
+    <a th:href="@{/registration}">Зарегистрироваться</a>
+</body>
+</html>

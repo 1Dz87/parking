@@ -9,6 +9,8 @@ public interface IUserDao {
 
     void createUser(User user);
 
+    boolean ifUserExists(String login);
+
     User findById(Long name);
 
     User getCarOwner(String model);
