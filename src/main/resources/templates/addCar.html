@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div th:fragment="addCarFragment">
+        <dialog id="addCarDialog">
+            <form id="addCarForm" onsubmit="addCarSubmit.submit()" enctype="multipart/form-data">
+                <section>
+                    <p>
+                        <label class="myLabel" id="modelLabel" for="model">Модель: </label>
+                        <input id="model" type="text" name="model" />
+                    </p>
+                    <p>
+                        <label class="myLabel">Тип кузова: </label>
+                        <select id="body" name="body" >
+                            <option></option>
+                            <option th:each="bodyOpt : ${T(du.lessons.parking.model.CarBody).values()}"
+                                th:value="${bodyOpt}" th:text="${bodyOpt.description}"></option>
+                        </select>
+                    </p>
+                    <p>
+                        <label class="myLabel" id="engineTypeLabel">Тип двигателя:</label>
+                        <select id="eType" name="engineType" >
+                            <option></option>
+                            <option th:each="bodyOpt : ${T(du.lessons.parking.model.EngineType).values()}"
+                                    th:value="${bodyOpt}" th:text="${bodyOpt.description}"></option>
+                        </select>
+                    </p>
+                    <p>
+                        <label class="myLabel">Объем двигателя:</label>
+                        <input id="engineValue" type="number" name="engineValue" step="0.1"/>
+                    </p>
+                    <p>
+                        <label class="myLabel">Фото:</label>
+                        <input type="file" name="carImage" />
+                    </p>
+                </section>
+                <menu>
+                    <button type="submit">Сохранить</button>
+                    <button type="reset" id="cancel" onclick="addCarSubmit.cancelEvent()">Отмена</button>
+                </menu>
+            </form>
+        </dialog>
+        <script type="text/javascript" th:src="@{/js/addCarDialog.js}"></script>
+    </div>
+</body>
+</html>

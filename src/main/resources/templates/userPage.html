@@ -1,20 +1,37 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Личный кабинет</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 <h2>Личный <span th:text="${user.login}"></span> кабинет</h2>
-<table border='1px'>
-    <tr>
-        <th>Логин</th>
-        <th>Возраст</th>
-    </tr>
-    <tr>
-        <td th:text="${user.login}"></td>
-        <td th:text="${user.age}"></td>
-    </tr>
-</table>
+    <table border='1px'>
+        <tr>
+            <th>Логин</th>
+            <th>Возраст</th>
+        </tr>
+        <tr>
+            <td th:text="${user.login}"></td>
+            <td th:text="${user.age}"></td>
+        </tr>
+    </table>
+    <div th:insert="~{addCar :: addCarFragment}"></div>
+    <p>
+        <div th:insert="~{garage::garageFragment}"></div>
+    </p>
+    <p>
+        <button id="showDialogBt">Добавить транспорт</button>
+    </p>
+<script>
+    (function () {
+        let showBt = document.getElementById('showDialogBt');
+        showBt.addEventListener('click', function () {
+            let addCarDialog = document.getElementById('addCarDialog');
+            addCarDialog.showModal();
+        });
+    })();
+</script>
 </body>
 </html>

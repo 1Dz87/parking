@@ -1,6 +1,7 @@
 package du.lessons.parking.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "cars")
@@ -10,7 +11,15 @@ public class Car {
 
     private String model;
 
+    private CarBody body;
+
+    private Float engineValue;
+
+    private EngineType type;
+
     private User user;
+
+    private CarImage image;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,5 +48,43 @@ public class Car {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "body")
+    public CarBody getBody() {
+        return body;
+    }
+
+    public void setBody(CarBody body) {
+        this.body = body;
+    }
+
+    @OneToOne(mappedBy = "car", cascade = CascadeType.ALL)
+    public CarImage getImage() {
+        return image;
+    }
+
+    public void setImage(CarImage image) {
+        this.image = image;
+    }
+
+    @Column(name = "engine_value")
+    public Float getEngineValue() {
+        return engineValue;
+    }
+
+    public void setEngineValue(Float engineValue) {
+        this.engineValue = engineValue;
+    }
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "engine_type")
+    public EngineType getType() {
+        return type;
+    }
+
+    public void setType(EngineType type) {
+        this.type = type;
     }
 }

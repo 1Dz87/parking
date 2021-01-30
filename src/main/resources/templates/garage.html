@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div th:fragment="garageFragment">
+        <table border="1px" id="garageId">
+            <thead>
+                <th>Модель</th>
+                <th>Тип кузова</th>
+                <th>Тип двигателя</th>
+                <th>Объем двигателя</th>
+                <th>Фото</th>
+                <th>Редактировать</th>
+            </thead>
+            <tbody>
+            <tr th:each="car: ${user.cars}">
+                <td th:text="${car.model}" >
+                </td>
+                <td th:text="${car.body.description}"></td>
+                <td th:if="${car.type != null}" th:text="${car.type.description}"></td>
+                <td th:text="${car.engineValue}"></td>
+                <td th:if="${car.image != null}" >
+                    <img th:src="'data:image/' + ${car.image.format} + ';base64,' + ${car.image.photo}" width="200", height="200">
+                </td>
+                <td><i class="fa fa-pencil fa-3x" aria-hidden="true" style="align-self: center" th:attr="onclick=|addCarSubmit.onTableClick('${car.model}', '${car.id}')|"></i></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
