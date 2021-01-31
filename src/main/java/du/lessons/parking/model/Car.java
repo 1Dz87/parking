@@ -1,10 +1,13 @@
 package du.lessons.parking.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "cars")
+@JsonIgnoreProperties(value = { "user" })
 public class Car {
 
     private Long id;
@@ -40,7 +43,7 @@ public class Car {
         this.model = model;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     public User getUser() {
         return user;

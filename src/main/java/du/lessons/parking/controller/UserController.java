@@ -1,5 +1,8 @@
 package du.lessons.parking.controller;
 
+import du.lessons.parking.lib.dto.CommonResponse;
+import du.lessons.parking.lib.exceptions.CarNotFoundException;
+import du.lessons.parking.lib.util.Utils;
 import du.lessons.parking.model.Car;
 import du.lessons.parking.model.CarBody;
 import du.lessons.parking.model.EngineType;
@@ -51,17 +54,39 @@ public class UserController {
         return view;
     }
 
+    @ResponseBody
     @PostMapping("/addCar")
-    public String addCar(@RequestParam String model, @RequestParam CarBody body, @RequestParam EngineType engineType,
-                         @RequestParam Float engineValue, @RequestParam MultipartFile carImage, @ModelAttribute(USER) User user) {
+    public CommonResponse<Car> addCar(@RequestParam String model, @RequestParam CarBody body, @RequestParam EngineType engineType,
+                                     @RequestParam Float engineValue, @RequestParam MultipartFile carImage, @ModelAttribute(USER) User user) {
         Car car = null;
         try {
             car = carService.createCar(user, model, body, engineType, engineValue, carImage);
             user.getCars().add(car);
         } catch (IOException e) {
-            e.printStackTrace();
+            CommonResponse<Car> response = new CommonResponse<>();
+            response.getError(e.getMessage());
+            return response;
         }
-        return "redirect:/user/userPage";
+        CommonResponse<Car> response = new CommonResponse<>();
+        response.getSuccess(car, Utils.getEmptyString());
+        return response;
+    }
+
+    @ResponseBody
+    @PostMapping("/updateCar")
+    public CommonResponse<Car> updateCar(@RequestParam Long id, @RequestParam String model, @RequestParam CarBody body, @RequestParam EngineType engineType,
+                            @RequestParam(required = false) Float engineValue, @RequestParam(required = false) MultipartFile carImage, @ModelAttribute(USER) User user) {
+        try {
+            Car car = carService.getById(id);
+            carService.updateCar(car, model, body, engineType, engineValue, carImage);
+            CommonResponse<Car> response = new CommonResponse<>();
+            response.getSuccess(car, Utils.getEmptyString());
+            return response;
+        } catch (CarNotFoundException | IOException e) {
+            CommonResponse<Car> response = new CommonResponse<>();
+            response.getError(e.getMessage());
+            return response;
+        }
     }
 
 }

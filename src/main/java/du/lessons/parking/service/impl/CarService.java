@@ -1,5 +1,6 @@
 package du.lessons.parking.service.impl;
 
+import du.lessons.parking.lib.exceptions.CarNotFoundException;
 import du.lessons.parking.model.*;
 import du.lessons.parking.repository.ICarDao;
 import du.lessons.parking.service.ICarService;
@@ -10,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.Base64;
+import java.util.Optional;
 
 @Service
 public class CarService implements ICarService {
@@ -36,6 +38,28 @@ public class CarService implements ICarService {
         return car;
     }
 
+    @Override
+    public Car getById(Long id) throws CarNotFoundException {
+        return carDao.getById(id).orElseThrow(CarNotFoundException::new);
+    }
+
+    @Override
+    public void updateCar(Car car, String model, CarBody body, EngineType engineType, Float engineValue, MultipartFile carImage) throws IOException {
+        car.setModel(model);
+        car.setBody(body);
+        car.setEngineValue(engineValue);
+        car.setType(engineType);
+        if (carImage != null) {
+            if (car.getImage() != null) {
+                carDao.removeImage(car.getImage());
+            }
+            CarImage img = getImage(carImage);
+            img.setCar(car);
+            car.setImage(img);
+        }
+        carDao.update(car);
+    }
+
     private CarImage getImage(MultipartFile file) throws IOException {
         byte[] photoBytes = file.getBytes();
         final String base64carImage = Base64.getEncoder().encodeToString(photoBytes);
@@ -53,4 +77,6 @@ public class CarService implements ICarService {
         img.setPhoto(base64carImage);
         return img;
     }
+
+
 }

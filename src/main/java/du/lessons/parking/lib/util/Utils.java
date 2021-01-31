@@ -10,6 +10,10 @@ public class Utils {
         return str == null || str.length() < 1;
     }
 
+    public static String getEmptyString() {
+        return "";
+    }
+
     public static Boolean checkboxToBoolean(String value) {
         if (stringIsEmpty(value)) {
             return false;

@@ -6,8 +6,8 @@
 </head>
 <body>
     <div th:fragment="addCarFragment">
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <dialog id="addCarDialog">
-            <form id="addCarForm" onsubmit="addCarSubmit.submit()" enctype="multipart/form-data">
                 <section>
                     <p>
                         <label class="myLabel" id="modelLabel" for="model">Модель: </label>
@@ -35,14 +35,15 @@
                     </p>
                     <p>
                         <label class="myLabel">Фото:</label>
-                        <input type="file" name="carImage" />
+                        <input id="carPhotoIn" type="file" name="carImage" />
                     </p>
+                    <input name="id" id="carIdInput" hidden/>
                 </section>
                 <menu>
-                    <button type="submit">Сохранить</button>
+                    <button onclick="addCarSubmit.submit()">Сохранить</button>
                     <button type="reset" id="cancel" onclick="addCarSubmit.cancelEvent()">Отмена</button>
                 </menu>
-            </form>
+            <span id="error"></span>
         </dialog>
         <script type="text/javascript" th:src="@{/js/addCarDialog.js}"></script>
     </div>

@@ -1,9 +1,13 @@
 package du.lessons.parking.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "car_image")
+@JsonIgnoreProperties(value = { "car" })
 public class CarImage {
 
     private Long id;
@@ -14,6 +18,7 @@ public class CarImage {
 
     private String photo;
 
+    @JsonIgnore
     private Car car;
 
     @Id
@@ -53,7 +58,7 @@ public class CarImage {
         this.photo = photo;
     }
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "car")
     public Car getCar() {
         return car;
