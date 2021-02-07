@@ -15,5 +15,5 @@ public interface ICarService {
 
     Car getById(Long id) throws CarNotFoundException;
 
-    void updateCar(Car car, String model, CarBody body, EngineType engineType, Float engineValue, MultipartFile carImage) throws IOException;
+    Car updateCar(Long carId, String model, CarBody body, EngineType engineType, Float engineValue, MultipartFile carImage) throws IOException, CarNotFoundException;
 }

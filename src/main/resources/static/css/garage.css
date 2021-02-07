@@ -1,0 +1,14 @@
+#garageId {
+    width: 90%;
+    border: 1px solid #000;
+    border-collapse: collapse;
+}
+
+
+th, td {
+    width: 15%;
+    text-align: left;
+    border: 1px solid #000;
+    border-collapse: collapse;
+    padding: 1em;
+}

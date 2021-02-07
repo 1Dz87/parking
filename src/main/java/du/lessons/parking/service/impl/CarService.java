@@ -6,6 +6,7 @@ import du.lessons.parking.repository.ICarDao;
 import du.lessons.parking.service.ICarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -44,7 +45,9 @@ public class CarService implements ICarService {
     }
 
     @Override
-    public void updateCar(Car car, String model, CarBody body, EngineType engineType, Float engineValue, MultipartFile carImage) throws IOException {
+    @Transactional
+    public Car updateCar(Long carId, String model, CarBody body, EngineType engineType, Float engineValue, MultipartFile carImage) throws IOException, CarNotFoundException {
+        Car car = getById(carId);
         car.setModel(model);
         car.setBody(body);
         car.setEngineValue(engineValue);
@@ -58,6 +61,7 @@ public class CarService implements ICarService {
             car.setImage(img);
         }
         carDao.update(car);
+        return car;
     }
 
     private CarImage getImage(MultipartFile file) throws IOException {
@@ -77,6 +81,4 @@ public class CarService implements ICarService {
         img.setPhoto(base64carImage);
         return img;
     }
-
-
 }

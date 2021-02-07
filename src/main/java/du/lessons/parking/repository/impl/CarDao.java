@@ -5,10 +5,10 @@ import du.lessons.parking.model.CarImage;
 import du.lessons.parking.repository.ICarDao;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Repository

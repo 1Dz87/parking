@@ -43,7 +43,7 @@ public class UserController {
             try {
                 User user = userService.findUserByLogin(login, Boolean.TRUE);
                 view.setViewName("userPage");
-                view.addObject("user", user);
+                view.addObject(USER, user);
             } catch (Exception e) {
                 view.addObject("error", e.getMessage());
                 view.setViewName("login");
@@ -57,7 +57,7 @@ public class UserController {
     @ResponseBody
     @PostMapping("/addCar")
     public CommonResponse<Car> addCar(@RequestParam String model, @RequestParam CarBody body, @RequestParam EngineType engineType,
-                                     @RequestParam Float engineValue, @RequestParam MultipartFile carImage, @ModelAttribute(USER) User user) {
+                                     @RequestParam Float engineValue, @RequestParam(required = false) MultipartFile carImage, @SessionAttribute(USER) User user) {
         Car car = null;
         try {
             car = carService.createCar(user, model, body, engineType, engineValue, carImage);
@@ -75,10 +75,9 @@ public class UserController {
     @ResponseBody
     @PostMapping("/updateCar")
     public CommonResponse<Car> updateCar(@RequestParam Long id, @RequestParam String model, @RequestParam CarBody body, @RequestParam EngineType engineType,
-                            @RequestParam(required = false) Float engineValue, @RequestParam(required = false) MultipartFile carImage, @ModelAttribute(USER) User user) {
+                            @RequestParam(required = false) Float engineValue, @RequestParam(required = false) MultipartFile carImage, @SessionAttribute(USER) User user) {
         try {
-            Car car = carService.getById(id);
-            carService.updateCar(car, model, body, engineType, engineValue, carImage);
+            Car car = carService.updateCar(id, model, body, engineType, engineValue, carImage);
             CommonResponse<Car> response = new CommonResponse<>();
             response.getSuccess(car, Utils.getEmptyString());
             return response;
