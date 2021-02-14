@@ -8,7 +8,10 @@ import javax.persistence.*;
 @Entity
 @Table(name = "cars")
 @JsonIgnoreProperties(value = { "user" })
+@NamedQueries({@NamedQuery(query = "delete from Car where id=:id", name = Car.DELETE_QUERY)})
 public class Car {
+
+    public static final String DELETE_QUERY = "delete.car";
 
     private Long id;
 

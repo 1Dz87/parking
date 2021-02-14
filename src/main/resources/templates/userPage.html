@@ -5,8 +5,9 @@
     <title>Личный кабинет</title>
 </head>
 <body>
-<h2>Личный <span th:text="${user.login}"></span> кабинет</h2>
-    <table border='1px'>
+<link rel="stylesheet" th:href="@{/css/common.css}">
+<h2>Личный <span class="common-text-style" th:text="${user.login}"></span> кабинет</h2>
+    <table border='1px' id="userTable">
         <tr>
             <th>Логин</th>
             <th>Возраст</th>
@@ -23,6 +24,9 @@
     <p>
         <button id="showDialogBt" onclick="addCarDialogFunctions.setCreate()">Добавить транспорт</button>
     </p>
+<p>
+    <button type="button" onclick="addCarDialogFunctions.addDiv()">Добавить текст</button>
+</p>
 <script>
     (function () {
         let showBt = document.getElementById('showDialogBt');

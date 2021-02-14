@@ -14,4 +14,6 @@ public interface ICarDao {
     Optional<Car> getById(Long id);
 
     void removeImage(CarImage img);
+
+    void delete(Long id);
 }

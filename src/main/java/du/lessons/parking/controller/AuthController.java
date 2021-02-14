@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
@@ -33,20 +34,12 @@ public class AuthController {
     }
 
     @PostMapping("/registration")
-    public ModelAndView register(@ModelAttribute("registerForm") @Valid RegisterFormDTO registerForm,
-                                 BindingResult bindingResult, ModelAndView view) {
-        if (bindingResult.hasErrors()) {
-            view.setViewName("register");
-            return view;
-        }
-        if (!registerForm.getPassword().equals(registerForm.getRepeatPassword())) {
-            view.setViewName("register");
-            view.addObject("passwordError", "Пароли не совпадают");
-            return view;
-        }
+    public ModelAndView register(@ModelAttribute("registerForm") RegisterFormDTO registerForm,
+                                 ModelAndView view, HttpServletRequest request) {
         try {
             User user = userService.createUser(registerForm);
-            view.setViewName("/user/userPage");
+            request.login(user.getUsername(), registerForm.getPassword());
+            view.setViewName("redirect:/user/userPage");
             view.addObject("user", user);
         } catch (Exception e) {
             view.setViewName("register");

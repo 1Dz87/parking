@@ -34,6 +34,11 @@ public class CarDao implements ICarDao {
     }
 
     @Override
+    public void delete(Long id) {
+        manager.createNamedQuery(Car.DELETE_QUERY).setParameter("id", id).executeUpdate();
+    }
+
+    @Override
     public void update(Car car) {
         Session session = manager.unwrap(Session.class);
         session.saveOrUpdate(car);

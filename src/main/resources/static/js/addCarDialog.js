@@ -67,6 +67,15 @@ let addCarDialogFunctions = (function () {
         }
     };
 
+    let addDiv = function() {
+        let div = document.createElement("div");
+        let span = document.createElement('span');
+        span.textContent = 'Test text';
+        span.className = 'common-text-style';
+        div.appendChild(span);
+        document.body.insertBefore(div, document.getElementById('userTable'));
+    };
+
     let createFun = function(response, table) {
         let row = table.insertRow(table.rows.length),
             cellModel = row.insertCell(0),
@@ -138,6 +147,7 @@ let addCarDialogFunctions = (function () {
         onTableClick: onTableClick,
         cancelEvent: cancelClickEvent,
         submit: submit,
-        setCreate: setCreate
+        setCreate: setCreate,
+        addDiv: addDiv
     }
 })();

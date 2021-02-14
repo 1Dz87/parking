@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Регистрация нового пользователя</title>
@@ -9,37 +9,105 @@
     <form action="/registration" method="post" th:object="${registerForm}">
         <p>
             <label>Имя: </label>
-            <input type="text" name="firstName" />
-            <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" style="color: red">First Name Error</span>
+            <input id="firstNameInput" type="text" name="firstName" />
+            <span id="firstNameError" style="color: red; display: none"></span>
         </p>
         <p>
             <label>Фамилия: </label>
-            <input type="text" name="lastName" />
-            <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" style="color: red">Last Name Error</span>
+            <input id="lastNameInput" type="text" name="lastName" />
+            <span id="lastNameError" style="color: red; display: none"></span>
         </p>
         <p>
             <label>Логин: </label>
-            <input type="text" name="login" />
-            <span th:if="${#fields.hasErrors('login')}" th:errors="*{login}" style="color: red">Login Error</span>
-            <span th:if="${loginError != null}" style="color: red" th:text="${loginError}"></span>
+            <input id="loginInput" type="text" name="login" required/>
+            <span id="loginError" style="color: red; display: none"></span>
         </p>
         <p>
             <label>E-Mail</label>
             <input type="email" name="email">
-            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color: red">E-Mail Error</span>
         </p>
         <p>
             <label>Пароль: </label>
-            <input type="password" name="password" />
-            <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color: red">Password Error</span>
+            <input id="passwordInput" type="password" name="password" required/>
+            <span id="passwordError" style="color: red; display: none"></span>
         </p>
         <p>
             <label>Повторите пароль: </label>
-            <input type="password" name="repeatPassword" />
-            <span th:if="${#fields.hasErrors('repeatPassword')}" th:errors="*{repeatPassword}" style="color: red">Repeat Password Error</span>
-            <span th:if="${passwordError != null}" style="color: red" th:text="${passwordError}"></span>
+            <input id="repeatPasswordInput" type="password" name="repeatPassword" required/>
+            <span id="repeatPasswordError" style="color: red"></span>
         </p>
         <button type="submit">Зарегистрироваться</button>
     </form>
+<script>
+    (function () {
+
+        document.getElementById('firstNameInput').addEventListener('input', function () {
+            let input = document.getElementById('firstNameInput');
+            let errorInput = document.getElementById('firstNameError');
+            if (input.value.length > 5) {
+                errorInput.textContent = 'Превышена длина поля (не более 255 символов)';
+                errorInput.style.display = 'inline';
+            } else {
+                errorInput.style.display = 'none';
+            }
+        });
+
+        document.getElementById('lastNameInput').addEventListener('input', function () {
+            let input = document.getElementById('lastNameInput');
+            let errorInput = document.getElementById('lastNameError');
+            if (input.value.length > 5) {
+                errorInput.textContent = 'Превышена длина поля (не более 255 символов)';
+                errorInput.style.display = 'inline';
+            } else {
+                errorInput.style.display = 'none';
+            }
+        });
+
+        document.getElementById('loginInput').addEventListener('input', function () {
+            let input = document.getElementById('loginInput');
+            let errorInput = document.getElementById('loginError');
+            if (input.value.length > 5) {
+                errorInput.textContent = 'Превышена длина поля (не более 255 символов)';
+                errorInput.style.display = 'inline';
+            } else if (input.value.length < 3) {
+                errorInput.textContent = 'Не достаточная длина поля (не менее 3 символов)';
+                errorInput.style.display = 'inline';
+            } else {
+                errorInput.style.display = 'none';
+            }
+        });
+
+        document.getElementById('passwordInput').addEventListener('input', function () {
+            let input = document.getElementById('passwordInput');
+            let errorInput = document.getElementById('passwordError');
+            if (input.value.length > 255) {
+                errorInput.textContent = 'Превышена длина поля (не более 255 символов)';
+                errorInput.style.display = 'inline';
+            } else if (input.value.length < 5) {
+                errorInput.textContent = 'Не достаточная длина поля (не менее 5 символов)';
+                errorInput.style.display = 'inline';
+            } else {
+                errorInput.style.display = 'none';
+            }
+        });
+
+        document.getElementById('repeatPasswordInput').addEventListener('input', function () {
+            let input = document.getElementById('repeatPasswordInput');
+            let errorInput = document.getElementById('repeatPasswordError');
+            if (input.value.length > 255) {
+                errorInput.textContent = 'Превышена длина поля (не более 255 символов)';
+                errorInput.style.display = 'inline';
+            } else if (input.value.length < 5) {
+                errorInput.textContent = 'Не достаточная длина поля (не менее 5 символов)';
+                errorInput.style.display = 'inline';
+            }  else if (document.getElementById('passwordInput').value !== input.value) {
+                errorInput.textContent = 'Пароли не совпадают';
+                errorInput.style.display = 'inline';
+            } else {
+                errorInput.style.display = 'none';
+            }
+        });
+    })();
+</script>
 </body>
 </html>
