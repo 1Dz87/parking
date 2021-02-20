@@ -2,15 +2,21 @@ package du.lessons.parking.controller;
 
 import du.lessons.parking.lib.dto.CarDTO;
 import du.lessons.parking.lib.dto.RegisterFormDTO;
+import du.lessons.parking.lib.dto.UserDTO;
 import du.lessons.parking.lib.exceptions.CarNotFoundException;
 import du.lessons.parking.lib.exceptions.UserAlreadyExistsException;
 import du.lessons.parking.lib.exceptions.UserNotFoundException;
 import du.lessons.parking.model.User;
 import du.lessons.parking.service.ICarService;
 import du.lessons.parking.service.IUserService;
+import du.lessons.parking.service.auth.IJwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -25,10 +31,34 @@ public class ParkingRestController {
 
     private final ICarService carService;
 
+    private final AuthenticationManager authenticationManager;
+
+    private final IJwtProvider provider;
+
     @Autowired
-    public ParkingRestController(IUserService userService, ICarService carService) {
+    public ParkingRestController(IUserService userService, ICarService carService, AuthenticationManager authenticationManager, IJwtProvider provider) {
         this.userService = userService;
         this.carService = carService;
+        this.authenticationManager = authenticationManager;
+        this.provider = provider;
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody UserDTO userDTO) {
+        try {
+            User user = userService.findUserByLogin(userDTO.getLogin(), false);
+            if (user.isEnabled()) { //TODO: && user access rights
+                Authentication auth = authenticationManager
+                        .authenticate(new UsernamePasswordAuthenticationToken(userDTO.getLogin(), userDTO.getPassword()));
+                SecurityContextHolder.getContext().setAuthentication(auth);
+                String jwt = provider.generateJwtToken(user.getLogin());
+                return ResponseEntity.ok(jwt);
+            } else {
+                return new ResponseEntity<>("Ваш профиль заблокирован", HttpStatus.UNAUTHORIZED);
+            }
+        } catch (UserNotFoundException e) {
+            return new ResponseEntity<>("Не верные данные авторизации", HttpStatus.UNAUTHORIZED);
+        }
     }
 
     // http://localhost:8080/api/user/test3 - реквест с переменной адреса

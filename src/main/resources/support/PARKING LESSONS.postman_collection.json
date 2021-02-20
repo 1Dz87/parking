@@ -60,7 +60,7 @@
 			"response": []
 		},
 		{
-			"name": "New Request",
+			"name": "Update car",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -69,11 +69,40 @@
 			"response": []
 		},
 		{
-			"name": "New Request",
+			"name": "Delete car",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": null
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"login\": \"test3\",\r\n    \"password\": \"test3\" \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"login"
+					]
+				}
 			},
 			"response": []
 		}
